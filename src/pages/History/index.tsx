@@ -1,6 +1,10 @@
+import { useCycles } from '../../context/CyclesContext'
 import { HistoryContainer, HistoryList, Status } from './styles'
+import { formatDistanceToNow } from 'date-fns'
+import PtBR from 'date-fns/locale/pt-BR'
 
 export function History() {
+  const { cycles } = useCycles()
   return (
     <HistoryContainer>
       <h1>Meu histórico</h1>
@@ -16,30 +20,29 @@ export function History() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Conserto de débitos técnicos</td>
-              <td>25 minutos</td>
-              <td>Há cerca de 2 meses</td>
-              <td>
-                <Status statusColor="green">Interrompido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Conserto de débitos técnicos</td>
-              <td>25 minutos</td>
-              <td>Há cerca de 2 meses</td>
-              <td>
-                <Status statusColor="green">Interrompido</Status>
-              </td>
-            </tr>
-            <tr>
-              <td>Conserto de débitos técnicos</td>
-              <td>25 minutos</td>
-              <td>Há cerca de 2 meses</td>
-              <td>
-                <Status statusColor="green">Interrompido</Status>
-              </td>
-            </tr>
+            {cycles.map((cycle) => (
+              <tr key={cycle.id}>
+                <td>{cycle.task}</td>
+                <td>{cycle.minutesAmount} minutos</td>
+                <td>
+                  {formatDistanceToNow(cycle.startDate, {
+                    addSuffix: true,
+                    locale: PtBR,
+                  })}
+                </td>
+                <td>
+                  {cycle.finishedDate && (
+                    <Status statusColor="green">Concluido</Status>
+                  )}
+                  {cycle.interruptedDate && (
+                    <Status statusColor="red">Interrompido</Status>
+                  )}
+                  {!cycle.interruptedDate && !cycle.finishedDate && (
+                    <Status statusColor="yellow">Em andamento</Status>
+                  )}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </HistoryList>
