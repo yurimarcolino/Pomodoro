@@ -42,17 +42,15 @@ npm install && npm start
 
 ### Assumptions
 
-## Home Page
-
-# Token Name
+## Home page
 
 <img src="./docs/home-pomodoro.png" width=500 height=300 />
 
 This step is the entry point, and the user can start the Pomodoro clock and interrupt if wants to.
 
-# Token Symbol
+## History page
 
-<img src="./docs/histort-pomodoro" width=500 height=300/>
+<img src="./docs/history-pomodoro" width=500 height=300/>
 
 This is where the user com check his Pomodoro's history and also see if a Pomodoro was finished, interrupted or if the timer is
 still ongoing.
