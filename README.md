@@ -14,6 +14,8 @@ Why Vite ?
 
 You can check more about the benefits of Vite in: https://vitejs.dev/guide/why.html
 
+### Check out the application in production here: https://pomodoro-six-bice.vercel.app/
+
 ## How to run this project
 
 In the project directory, you can run:
