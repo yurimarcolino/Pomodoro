@@ -32,10 +32,10 @@ npm install && npm start
 
 ## Libraries used
 
-- Styled components
-- React-hook-form
-- Zod
-- Immer
+- styled components
+- react-hook-form
+- zod
+- immer
 - date-fns
 - react-router-dom
 - phosphor-react
@@ -50,7 +50,7 @@ This step is the entry point, and the user can start the Pomodoro clock and inte
 
 ## History page
 
-<img src="./docs/history-pomodoro" width=500 height=300/>
+<img src="./docs/history-pomodoro.png" width=500 height=300/>
 
 This is where the user com check his Pomodoro's history and also see if a Pomodoro was finished, interrupted or if the timer is
 still ongoing.
