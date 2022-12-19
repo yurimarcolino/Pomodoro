@@ -42,10 +42,12 @@ export function CyclesProvider({ children }: CyclesProviderProps) {
       cycles: [],
       activeCycleId: null,
     },
-    () => {
+    (initialValue) => {
       const storedState = localStorage.getItem('@pomodoro-ignite.1.0.0')
 
-      if (storedState) return JSON.parse(storedState)
+      if (!storedState) return initialValue
+
+      return JSON.parse(storedState)
     },
   )
 
