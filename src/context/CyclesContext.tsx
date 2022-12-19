@@ -1,13 +1,10 @@
-import React, { createContext, useContext, useState } from 'react'
-
-interface Cycle {
-  id: string
-  task: string
-  minutesAmount: number
-  startDate: Date
-  interruptedDate?: Date
-  finishedDate?: Date
-}
+import React, { createContext, useContext, useState, useReducer } from 'react'
+import {
+  createNewCycleAction,
+  interruptCurrentCycleAction,
+  markCurrentCycleAsFinishedAction,
+} from '../reducers/cycle/actions'
+import { Cycle, cycleReducer } from '../reducers/cycle/reducer'
 
 interface CreateCycleData {
   task: string
@@ -23,57 +20,31 @@ interface CyclesContextData {
   activeCycleId: string | null
   amountSecondsPassed: number
   activeCycle: Cycle | undefined
-  totalSeconds: number
   markCurrentCycleAsFinished: () => void
   setSecondsPassed: (seconds: number) => void
   interruptCurrentCycle: () => void
-  addNewCycle(cycle: Cycle): void
   createNewCycle: ({ task, minutesAmount }: CreateCycleData) => void
 }
 
 const cyclesContext = createContext({} as CyclesContextData)
 
 export function CyclesProvider({ children }: CyclesProviderProps) {
-  const [cycles, setCycles] = useState<Cycle[]>([])
-  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
+  const [cyclesState, dispatch] = useReducer(cycleReducer, {
+    cycles: [],
+    activeCycleId: null,
+  })
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
-  const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId)
+  const { cycles, activeCycleId } = cyclesState
 
-  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+  const activeCycle = cycles.find((cycle: any) => cycle.id === activeCycleId)
 
   function markCurrentCycleAsFinished() {
-    setCycles((state) =>
-      state.map((cycle) => {
-        if (cycle.id === activeCycleId) {
-          return { ...cycle, finishedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    )
-  }
-
-  function setSecondsPassed(seconds: number) {
-    setAmountSecondsPassed(seconds)
-  }
-
-  function addNewCycle(cycle: Cycle) {
-    setCycles((state) => [...state, cycle])
+    dispatch(markCurrentCycleAsFinishedAction())
   }
 
   function interruptCurrentCycle() {
-    setCycles((state) =>
-      state.map((cycle) => {
-        if (cycle.id === activeCycleId) {
-          return { ...cycle, interruptedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    )
-    setActiveCycleId(null)
-    document.title = 'Pomodoro'
+    dispatch(interruptCurrentCycleAction(activeCycleId))
   }
 
   function createNewCycle({ task, minutesAmount }: CreateCycleData) {
@@ -86,9 +57,12 @@ export function CyclesProvider({ children }: CyclesProviderProps) {
       startDate: new Date(),
     }
 
-    addNewCycle(newCycle)
-    setActiveCycleId(id)
+    dispatch(createNewCycleAction(newCycle))
     setSecondsPassed(0)
+  }
+
+  function setSecondsPassed(seconds: number) {
+    setAmountSecondsPassed(seconds)
   }
 
   return (
@@ -96,14 +70,12 @@ export function CyclesProvider({ children }: CyclesProviderProps) {
       value={{
         createNewCycle,
         cycles,
-        addNewCycle,
         interruptCurrentCycle,
         markCurrentCycleAsFinished,
         activeCycleId,
         amountSecondsPassed,
         setSecondsPassed,
         activeCycle,
-        totalSeconds,
       }}
     >
       {children}
