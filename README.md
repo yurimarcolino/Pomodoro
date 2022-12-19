@@ -8,7 +8,7 @@ study habits which in turn lead to procrastination.
 The aim of the Pomodoro Technique is to use time as a valuable ally in accomplishing what we want to do in the way 
 we want to do it, and to enable us to improve continually the way we work or study.
 
-## This project os created using ViteJS
+## This project was created using ViteJS
 
 Why Vite ? 
 
