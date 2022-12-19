@@ -52,7 +52,7 @@ This step is the entry point, and the user can start the Pomodoro clock and inte
 
 <img src="./docs/history-pomodoro.png" width=500 height=300/>
 
-This is where the user com check his Pomodoro's history and also see if a Pomodoro was finished, interrupted or if the timer is
+This is where the user can check his Pomodoro's history and also see if a Pomodoro was finished, interrupted or if the timer is
 still ongoing.
 
 ## TODO
